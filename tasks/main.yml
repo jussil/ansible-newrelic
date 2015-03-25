@@ -1,0 +1,33 @@
+---
+
+##################################
+# New Relic
+#################################
+
+- name: Install GPG key
+  apt_key: url=http://download.newrelic.com/548C16BF.gpg state=present
+  register: gpg_key_installed
+
+- name: Place repo configuration
+  when: gpg_key_installed|success
+  template: src=newrelic.list.j2 dest=/etc/apt/sources.list.d/newrelic.list
+  register: newrelic_repo_installed
+
+- name: Install New Relic packages
+  when: newrelic_repo_installed|success and {{ newrelic_install }}
+  apt: pkg={{ item }} state=latest update_cache=yes
+  with_items: newrelic_packages
+  register: newrelic_installed
+
+- name: Place New Relic sysmond configuration template
+  when: newrelic_installed|success
+  template: src=nrsysmond.cfg.j2 dest=/etc/newrelic/nrsysmond.cfg
+  notify: restart nrsysmond
+
+- name: Place New Relic configuration template
+  when: newrelic_installed|success
+  template: src=newrelic.ini.j2 dest=/etc/php5/mods-available/newrelic.ini
+
+- name: Enable New Relic php module
+  shell: /usr/sbin/php5enmod newrelic
+  notify: restart php-fpm

@@ -1,0 +1,13 @@
+---
+# default variables
+# please overwrite in the playbook.yml
+
+newrelic_install: true
+newrelic_config:
+  key: "REPLACE_WITH_REAL_KEY"
+  app_name: "REPLACE_WITH_REAL_NAME"
+  sysmond_key: "REPLACE_WITH_REAL_KEY"
+
+newrelic_packages:
+  - newrelic-sysmond
+  - newrelic-php5

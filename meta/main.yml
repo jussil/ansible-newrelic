@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  author: jussil
+  description: Stolen
+  company: "Druid"
+  license: "license (BSD, MIT)"
+  min_ansible_version: 1.4
+  platforms:
+  - name: Ubuntu
+    versions:
+    - all
+  categories:
+    - development
+    - web

@@ -28,6 +28,9 @@
   when: newrelic_installed|success
   template: src=newrelic.ini.j2 dest=/etc/php5/mods-available/newrelic.ini
 
+#- name: Do newrelic install
+#  shell: echo '{{ newrelic_config.key|default("REPLACE_WITH_REAL_KEY") }}' |newrelic-install install
+
 - name: Enable New Relic php module
   shell: /usr/sbin/php5enmod newrelic
   notify: restart php-fpm
